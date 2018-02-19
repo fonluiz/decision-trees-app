@@ -18,7 +18,7 @@ chess_data <- read_csv("./chess_data.csv")
 
 createTree <- function(rpartControl) {
   formula <- as.formula(win_depth ~ .)
-  tree <- rpart(form,data=data,control=rpartControl)
+  tree <- rpart(formula,data=chess_data,control=rpartControl)
 }
 
 # Define server logic required to draw a histogram
