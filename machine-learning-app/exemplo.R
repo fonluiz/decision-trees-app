@@ -9,7 +9,10 @@ dados_treino = read_csv("data/dados_treino.csv") %>%
   mutate(eleito = (desc_sit_tot_turno != "NÃO ELEITO"), sexo = (sexo == "MASCULINO")) %>%
   select(quantidade_doacoes, total_receita, sexo, idade, eleito, qtde_votos, votos) %>%
   na.omit()
-dados_teste = read_csv("data/dados_teste.csv") %>% mutate(eleito = (desc_sit_tot_turno != "NÃO ELEITO"))
+dados_teste = read_csv("data/dados_teste.csv") %>%
+  mutate(eleito = (desc_sit_tot_turno != "NÃO ELEITO"), sexo = (sexo == "MASCULINO")) %>%
+  select(quantidade_doacoes, total_receita, sexo, idade, eleito, qtde_votos, votos) %>%
+  na.omit()
 
 input <- dados_treino %>%
   select(-qtde_votos) %>% # dont include the variable we're predicting!
