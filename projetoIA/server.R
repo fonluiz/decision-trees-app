@@ -10,6 +10,9 @@
 # Não esqueça de setar o working directory
 library(shiny)
 library(readr)
+library(rpart)				  
+library(rattle)					
+library(rpart.plot)	
 
 chess_data <- read_csv("./chess_data.csv")
 
