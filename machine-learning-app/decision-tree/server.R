@@ -1,7 +1,6 @@
 library(shiny)
 library(readr)
 library(rpart)				  
-library(rattle)					
 library(rpart.plot)	
 
 chess_data <- read_csv("data/chess.csv")
