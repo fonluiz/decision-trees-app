@@ -1,5 +1,5 @@
-train_num <- read_csv("~/decision-trees-app/machine-learning-app/data/numeric/train.csv")
-test_num <- read_csv("~/decision-trees-app/machine-learning-app/data/numeric/test.csv")
+train_num <- read_csv("data/numeric/train.csv")
+test_num <- read_csv("data/numeric/test.csv")
 
 # Tranform data into numeric data only
 test$wkc[test$wkc == "a"] <- 1
@@ -64,5 +64,21 @@ NN = neuralnet(win_depth ~ wkc+wkr+whc+whr+bkc+bkr, train_num, hidden = 3 , line
 plot(NN)
 
 saveRDS(NN, "neuralnetwork.rds")
-x <- readRDS("neuralnetwork.rds")
-plot(x)
+nn <- readRDS("neural-network/neuralnetwork-3layers.rds")
+prediction <- compute(nn, test_num[,c(1:6)])
+prediction <- (prediction$net.result * (max(train_num$win_depth) - min(train_num$win_depth))) + min(train_num$win_depth)
+
+library(ggplot2)
+
+test_num$prediction <- prediction
+
+ggplot(test_num$win_depth, prediction, col='blue', pch=16, ylab = "predicted rating NN", xlab = "real rating")
+
+ggplot(data = test_num, aes(x = win_depth, y = prediction)) +
+  labs(y= "predicted rating NN", x = "real rating") +
+  geom_point(color = "palevioletred2") +
+  geom_abline(slope=45, intercept=50)
+abline(0,1)
+
+RMSE.NN = (sum((test_num$win_depth - prediction)^2) / nrow(test_num)) ^ 0.5
+
