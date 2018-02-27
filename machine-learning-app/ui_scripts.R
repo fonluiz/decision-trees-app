@@ -2,15 +2,17 @@ library(shinydashboard)
 library(shinyjs)
 
 source("decision-tree/ui.R")
+source("neural-network/ui.R")
 
 tab1 = function() {
   basicPage(
-    h3("Árvore de decisão x Regressão logística", align = "center"),
+    h3("Modelos", align = "center"),
     br(),
     fluidRow(
       tabBox(width = 12,
-        tabPanel("Árvore de decisão", tabContent()),
-        tabPanel("Regressão logística")
+        tabPanel("Árvore de decisão", decisionTreeTab()),
+        tabPanel("Regressão logística"),
+        tabPanel("Rede neural", neuralNetworkTab())
       )
     )
   )
