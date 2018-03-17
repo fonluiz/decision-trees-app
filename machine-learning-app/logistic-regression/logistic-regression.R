@@ -26,20 +26,26 @@ model.gml2 = train(win_depth ~.,
                   trControl = fitControl2,
                   preProcess = c('scale', 'center', "nzv"))
 
-summary(model.gml)
-summary(model.gml2)
+summary(model.gml) # modelo com 5 iterações de reamostragens
+summary(model.gml2) # modelo com 10 iterações de reamostragens
 
 plot(model.gml2)
 plot(model.gml2, xvar = "lambda", label = T)
 plot(model.gml2, sub = T)
 
-predicao <- predict(model.gml2, teste)
-predicao2 <- predict(model.gml2, teste)
+predicao <- predict(model.gml, teste) # modelo com 5 iterações de reamostragens
+predicao2 <- predict(model.gml2, teste) # modelo com 10 iterações de reamostragens
 
-saveRDS(model.gml, "logistic-regression/logistic-regression.rds")
-saveRDS(model.gml2, "logistic-regression/logistic-regression2.rds")
+confusionMatrix(predicao, teste$win_depth)
+confusionMatrix(predicao2, teste$win_depth)
 
 
+saveRDS(model.gml, "logistic-regression/logistic-regression.rds") # modelo com 5 iterações de reamostragens
+saveRDS(model.gml2, "logistic-regression/logistic-regression2.rds") # modelo com 10 iterações de reamostragens
+
+##########################################################################################
+################################## ..:: EXTRA ::.. #######################################
+##########################################################################################
 
 model.lasso = glmnet(x = model.matrix( ~ . -win_depth, treino),
                      y = treino$win_depth,
@@ -61,7 +67,6 @@ coef(model.lasso)
 plot(model.ridge, xvar = "lambda", label = T)
 plot(model.ridge, sub = T)
 coef(model.ridge)
-
 
 
 cv.lasso = cv.glmnet(x = model.matrix( ~ . -win_depth, treino),
