@@ -3,19 +3,17 @@ library(shinyjs)
 library(tidyverse)
 
 source("ui_scripts.R")
-
-dados_treino = read_csv("data/dados_treino.csv")
-dados_teste = read_csv("data/dados_teste.csv")
+source("decision-tree/server.R")
+source("neural-network/server.R")
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Machine Learning App - Política Brasileira", titleWidth = 400),
+  dashboardHeader(title = "Machine Learning App - chess", titleWidth = 300),
   dashboardSidebar(
-    width = 400,
+    width = 300,
     useShinyjs(),
     sidebarMenu(id = "menu",
-                menuItem("Previsão de resultado final", tabName = "tab1", icon = icon("bookmark")),
-                menuItem("Previsão de investimento", tabName = "tab2", icon = icon("bookmark")),
-                menuItem("Aplicação dos modelos", tabName = "tab3", icon = icon("bookmark"))
+                menuItem("Modelos", tabName = "tab1", icon = icon("bookmark")),
+                menuItem("Resultados", tabName = "tab2", icon = icon("bookmark"))
                 
     )
   ),
@@ -38,9 +36,14 @@ ui <- dashboardPage(
 )
 
 
-server <- function(input, output) {
+server <- shinyServer(function(input, output) {
   
-}
+  # plot tree
+  output$treePlot <- renderDecisionTreePlot(input)
+  # plot neural network
+  output$neuralNetworkPlot <- renderNeuralNetworkPlot(input)
+  
+})
 
 # Run the application 
 shinyApp(ui = ui, server = server)
