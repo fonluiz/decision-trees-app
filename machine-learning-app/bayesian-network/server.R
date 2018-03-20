@@ -3,6 +3,7 @@ library(readr)
 library(devtools)
 library(bnclassify)
 library(caret)
+library(magrittr)
 
 set.seed(24)
 
@@ -12,7 +13,13 @@ test <- read_csv("data/numeric/test.csv") %>%
   lapply(as.factor) %>% as.data.frame()
 
 nb <- nb('win_depth', train)
+
+start <- Sys.time()
 nb.lp <- lp(nb, train, smooth = 0.01)
+finish <- Sys.time()
+
+time <- finish - start
+
 accuracy_bayes <- cv(nb.lp, train, k=10)
 pred <- predict(nb.lp, test)
 confusionMatrix(pred, test$win_depth)
